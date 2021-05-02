@@ -25,7 +25,6 @@ client.on('ready', async function () {
   setInterval(async () => {
     console.log('Fetching Data')
     const rawData = await fetchFeed()
-    console.log(rawData[0].seller.user)
     const oldData = JSON.parse(JSON.stringify(buffer))
     buffer = rawData
 
@@ -52,20 +51,24 @@ client.on('ready', async function () {
             name: 'Sale price',
             value: `$${numberWithCommas(
               (
-                (item.total_price / (10 ^ item.payment_token.decimals)) *
+                (item.total_price / eval(`1e` + item.payment_token.decimals)) *
                 item.payment_token.usd_price
               ).toFixed(2)
             )}`,
             inline: true,
           },
           {
-            name: 'Edition',
-            value: `#${item.asset.token_id}`,
+            name: 'Token price',
+            value: `$${numberWithCommas(
+              (
+                item.total_price / eval(`1e` + item.payment_token.decimals)
+              ).toFixed(2)
+            )} ${item.payment_token.symbol}`,
             inline: true,
           },
           {
-            name: '&nbsp;',
-            value: `&nbsp;`,
+            name: '\u200B',
+            value: '\u200B',
             inline: true,
           }
         )
@@ -82,6 +85,11 @@ client.on('ready', async function () {
             value: !item.winner_account.user
               ? item.winner_account.address.slice(0, 5) + '...'
               : item.winner_account.user.username,
+            inline: true,
+          },
+          {
+            name: '\u200B',
+            value: '\u200B',
             inline: true,
           }
         )
