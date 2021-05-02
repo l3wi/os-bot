@@ -48,7 +48,7 @@ client.on('ready', async function () {
         .setTimestamp()
         .addFields(
           {
-            name: 'Sale price',
+            name: 'USD price',
             value: `$${numberWithCommas(
               (
                 (item.total_price / eval(`1e` + item.payment_token.decimals)) *
@@ -59,7 +59,7 @@ client.on('ready', async function () {
           },
           {
             name: 'Token price',
-            value: `$${numberWithCommas(
+            value: `${numberWithCommas(
               (
                 item.total_price / eval(`1e` + item.payment_token.decimals)
               ).toFixed(2)
